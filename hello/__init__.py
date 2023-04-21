@@ -18,7 +18,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     name = "Taylor"
 
     if name:
-        return func.HttpResponse(f'<h1 style="color:red;">Hello, {name}!</h1>')
+        return func.HttpResponse(
+            f'<h1 style="color:red;">Hello, {name}!</h1>',
+            mimetype="text/html"
+        )
     else:
         return func.HttpResponse(
              "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",

@@ -35,9 +35,7 @@ def http(func=None, method: str = "GET", template: Optional[str] = None):
             
             logger.info(f'{method} func triggered: {req.url}')
             
-            inputs = req.params if method=="GET" else req.get_json()
-            
-            func_result = func(**inputs)
+            func_result = func(*args, **kwargs)
             
             if template:
                 with open(template) as _file:

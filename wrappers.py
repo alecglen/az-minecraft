@@ -27,8 +27,8 @@ def http(func=None, method: str = "GET", template: Optional[str] = None):
     
     def decorator(func):
         
-        @wraps(func)
         @error_boundary
+        @wraps(func)
         def wrapper(*args, **kwargs) -> HttpResponse:
             req = args[0]
             assert isinstance(req, HttpRequest)

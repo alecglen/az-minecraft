@@ -27,8 +27,8 @@ def http(func=None, method: str = "GET", template: Optional[str] = None):
     
     def decorator(func):
         
-        @error_boundary
         @wraps(func)
+        @error_boundary
         def wrapper(*args, **kwargs) -> HttpResponse:
             req = args[0]
             assert isinstance(req, HttpRequest)
@@ -36,6 +36,7 @@ def http(func=None, method: str = "GET", template: Optional[str] = None):
             logger.info(f'{method} func triggered: {req.url}')
             
             inputs = req.params if method=="GET" else req.get_json()
+            
             func_result = func(**inputs)
             
             if template:

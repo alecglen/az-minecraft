@@ -1,18 +1,18 @@
-from wrappers import http
+from azure.functions import HttpRequest, HttpResponse
+
+# from wrappers import http
 from errors import ValidationError
 
-from azure.functions import HttpRequest
 
-
-@http(template="hello/template.html")
+# @http(template="hello/template.html")
 def main(req: HttpRequest):
     name = req.params.get('name')
     if name is None:
         raise ValidationError("Request worked, but you didn't give me a name!")
     if len(req.params) > 1:
-        raise ValidationError("You gave me too many parameters!")
+        raise ValidationError("Request worked, but you gave me too many params!")
     
-    return {"name": name}
+    return HttpResponse(f"Hello {name}!")
 
 
 # -----------------------------------------------------------------------------

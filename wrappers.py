@@ -1,4 +1,3 @@
-import sys
 import logging
 from typing import Optional
 from functools import wraps
@@ -7,18 +6,6 @@ from traceback import format_exc
 from azure.functions import HttpResponse
 
 from errors import _BaseHttpException
-
-
-# --------------------------------- Logger config ---------------------------------------
-
-# logger = logging.getLogger()
-# logger.handlers.clear()
-# handler = logging.StreamHandler(sys.stdout)
-# _format = '%(asctime)s  -  %(name)s  -  %(levelname)s  -  %(message)s'
-# handler.setFormatter(logging.Formatter(_format))
-# logger.setLevel(logging.INFO)
-# handler.setLevel(logging.INFO)
-# logger.addHandler(handler)
 
 
 # ---------------------------------- HTTP Handler ---------------------------------------
@@ -30,8 +17,8 @@ def http(func=None, method: str = "GET", template: Optional[str] = None):
         # @error_boundary
         @wraps(func)
         def wrapper(*args, **kwargs) -> HttpResponse:
-            logging.info(f"Args: {args}")
-            logging.info(f"Kwargs: {kwargs}")
+            if "req" in kwargs:
+                logging.info(f"Received {method} request for {kwargs['req'].url}")
             
             func_result = func(*args, **kwargs)
             

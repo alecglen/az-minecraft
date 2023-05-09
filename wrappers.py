@@ -4,7 +4,7 @@ from typing import Optional
 from functools import wraps
 from traceback import format_exc
 
-from azure.functions import HttpRequest, HttpResponse
+from azure.functions import HttpResponse
 
 from errors import _BaseHttpException
 
@@ -30,8 +30,8 @@ def http(func=None, method: str = "GET", template: Optional[str] = None):
         # @error_boundary
         @wraps(func)
         def wrapper(*args, **kwargs) -> HttpResponse:
-            print("Args:", args)
-            print("Kwargs:", kwargs)
+            logger.info(f"Args: {args}")
+            logger.info(f"Kwargs: {kwargs}")
             
             func_result = func(*args, **kwargs)
             

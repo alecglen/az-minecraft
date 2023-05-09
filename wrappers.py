@@ -14,11 +14,14 @@ def http(func=None, method: str = "GET", template: Optional[str] = None):
     
     def decorator(func):
         
-        # @error_boundary
+        @error_boundary
         @wraps(func)
         def wrapper(*args, **kwargs) -> HttpResponse:
             if "req" in kwargs:
-                logging.info(f"Received {method} request for {kwargs['req'].url}")
+                logging.info(
+                    f"Received {method} request for {kwargs['req'].url} "
+                    f"with params {kwargs['req'].params}"
+                )
             
             func_result = func(*args, **kwargs)
             

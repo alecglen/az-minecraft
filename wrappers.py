@@ -11,14 +11,14 @@ from errors import _BaseHttpException
 
 # --------------------------------- Logger config ---------------------------------------
 
-logger = logging.getLogger()
-logger.handlers.clear()
-handler = logging.StreamHandler(sys.stdout)
-_format = '%(asctime)s  -  %(name)s  -  %(levelname)s  -  %(message)s'
-handler.setFormatter(logging.Formatter(_format))
-logger.setLevel(logging.INFO)
-handler.setLevel(logging.INFO)
-logger.addHandler(handler)
+# logger = logging.getLogger()
+# logger.handlers.clear()
+# handler = logging.StreamHandler(sys.stdout)
+# _format = '%(asctime)s  -  %(name)s  -  %(levelname)s  -  %(message)s'
+# handler.setFormatter(logging.Formatter(_format))
+# logger.setLevel(logging.INFO)
+# handler.setLevel(logging.INFO)
+# logger.addHandler(handler)
 
 
 # ---------------------------------- HTTP Handler ---------------------------------------
@@ -30,8 +30,8 @@ def http(func=None, method: str = "GET", template: Optional[str] = None):
         # @error_boundary
         @wraps(func)
         def wrapper(*args, **kwargs) -> HttpResponse:
-            logger.info(f"Args: {args}")
-            logger.info(f"Kwargs: {kwargs}")
+            logging.info(f"Args: {args}")
+            logging.info(f"Kwargs: {kwargs}")
             
             func_result = func(*args, **kwargs)
             
@@ -65,11 +65,11 @@ def error_boundary(func):
             return func(*args, **kwargs)
         
         except _BaseHttpException as e:
-            logger.error(f"{e.__class__.__name__}: {e.message}\n{format_exc()}")
+            logging.error(f"{e.__class__.__name__}: {e.message}\n{format_exc()}")
             return HttpResponse(e.message, status_code=e.__class__.code)
 
         except:
-            logger.critical("*** Unhandled Exception:\n" + format_exc())
+            logging.critical("*** Unhandled Exception:\n" + format_exc())
             return HttpResponse(
                 "Something went wrong; see logs for details.",
                 status_code=500

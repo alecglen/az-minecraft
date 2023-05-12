@@ -1,17 +1,25 @@
+import logging
 from azure.functions import HttpRequest
 
 from wrappers import http
 from errors import ValidationError
 
 
-@http(template="hello/template.html")
+players = [
+    {"id": "95024a36", "name": "Alec"},
+    {"id": "83ea724e", "name": "Tay"}
+]
+
+@http()
 def main(req: HttpRequest):
-    if req.params.get('name') is None:
-        raise ValidationError("Request worked, but you didn't give me a name!")
-    if len(req.params) > 1:
-        raise ValidationError("Request worked, but you gave me too many params!")
+    logging.info(req)
+    logging.info(req.url)
+    logging.info(req.params)
     
-    return req.params
+    return [
+        {"id": "95024a36", "name": "Alec"},
+        {"id": "83ea724e", "name": "Tay"}
+    ]
 
 
 # -----------------------------------------------------------------------------
@@ -19,6 +27,6 @@ def main(req: HttpRequest):
 
 if __name__ == "__main__":
     # Run a test and output the result
-    test_request = HttpRequest('GET', 'url', params={"name": "Test"}, body=bytes())
+    test_request = HttpRequest('GET', 'url', body=bytes())
     r = main(test_request)  # type: ignore
     print(r.status_code, ":", r.get_body().decode("utf-8"))

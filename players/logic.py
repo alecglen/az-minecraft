@@ -1,4 +1,6 @@
+import json
 import logging
+
 from azure.functions import HttpRequest
 
 from wrappers import http
@@ -16,10 +18,7 @@ def main(req: HttpRequest):
     logging.info(req.url)
     logging.info(req.params)
     
-    return [
-        {"id": "95024a36", "name": "Alec"},
-        {"id": "83ea724e", "name": "Tay"}
-    ]
+    return json.dumps(players)
 
 
 # -----------------------------------------------------------------------------
